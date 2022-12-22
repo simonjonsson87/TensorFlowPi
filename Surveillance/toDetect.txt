@@ -1,0 +1,5 @@
+[
+{"category_name": "person",     "score": 0.5,   "ring": 1   },
+{"category_name": "moose",     "score": 0,   "ring": 1   }
+]
+		
