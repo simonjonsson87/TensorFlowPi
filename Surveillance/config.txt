@@ -1,5 +1,6 @@
 { 
     "RESULT_IMAGE_PATH":"/home/pi/CapturedImages/"
+    ,"DIAGNOSTIC_IMAGE_INTERVAL": 300
 }
 
 		

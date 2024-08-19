@@ -63,6 +63,7 @@ options = vision.ObjectDetectorOptions(base_options=base_options, detection_opti
 detector = vision.ObjectDetector.create_from_options(options)
 
 timer = SJUtils.SimonsTimer()
+timerstart = 0
 
 # Continuously capture images from the camera and run inference
 while cam.isOpened():
@@ -79,7 +80,8 @@ while cam.isOpened():
       print("fps: " + str(fps)[:4])
       start_time = time.time()
 
-    image_small = cv2.resize(image, (640, 480))
+    image_small = image
+    image_small = cv2.resize(image_small, (640, 480))
 
     # Convert the image from BGR to RGB as required by the TFLite model.
     rgb_image = cv2.cvtColor(image_small, cv2.COLOR_BGR2RGB)
@@ -104,23 +106,30 @@ while cam.isOpened():
                 if category.score > tode['score'] and category.category_name == tode['category_name']:
                     if tode['ring'] > 0:
                         SJUtils.ring()
-                        name = CONFIG['RESULT_IMAGE_PATH'] + datetime.now().strftime("%Y-%m-%d_%H:%M:%S_") + tode['category_name']
+                        name = CONFIG['RESULT_IMAGE_PATH'] + datetime.now().strftime("%Y-%m-%d_%H%M%S_") + tode['category_name']
                         cv2.imwrite(name + '.jpg', image)
                         SJUtils.saveBoundingBox(detection.bounding_box, category, name + ".json")
 
     timer.milestone("Checked result")
 
-    # Draw keypoints and edges on input image
-    #image = utils.visualize(image, detection_result)
 
-    # Show the FPS
-    #fps_text = 'FPS = {:.1f}'.format(fps)
-    #text_location = (left_margin, row_size)
-    #cv2.putText(image, fps_text, text_location, cv2.FONT_HERSHEY_PLAIN,font_size, text_color, font_thickness)
 
-    #cv2.imwrite(script_path + 'out.jpg', image)
 
-    #timer.milestone("Done post processing")
+    if (time.time() - timerstart > CONFIG["DIAGNOSTIC_IMAGE_INTERVAL"]):
+      timerstart = time.time()
+
+      # Draw keypoints and edges on input image
+      image_small = utils.visualize(image_small, detection_result)
+
+      # Show the FPS
+      fps_text = 'FPS = {:.1f}'.format(fps)
+      text_location = (left_margin, row_size)
+      cv2.putText(image_small, fps_text, text_location, cv2.FONT_HERSHEY_PLAIN,font_size, text_color, font_thickness)
+
+      cv2.imwrite(script_path + 'out_small.jpg', image_small)
+      cv2.imwrite(script_path + 'out_big.jpg', image)
+
+      timer.milestone("Done post processing")
 
     # Stop the program if the ESC key is pressed.
     if cv2.waitKey(1) == 27:
