@@ -1,5 +1,8 @@
+
 [
-{"category_name": "person",     "score": 0.5,   "ring": 1   },
-{"category_name": "moose",     "score": 0,   "ring": 1   }
+{"category_name": "car"     ,"score": 0.5,   "ring": 1   },
+{"category_name": "truck"   ,"score": 0.5,   "ring": 1   },
+{"category_name": "dog"     ,"score": 0.5,   "ring": 1   },
+{"category_name": "cat"     ,"score": 0.5,   "ring": 1   }
 ]
 		

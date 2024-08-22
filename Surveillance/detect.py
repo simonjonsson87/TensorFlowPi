@@ -69,6 +69,7 @@ timerstart = 0
 while cam.isOpened():
     timer.start("Starting the loop!")
 
+    # Grab a frame
     image = cam.getFrame()
     timer.milestone("Grabbed image")
     
@@ -94,7 +95,7 @@ while cam.isOpened():
     # Run object detection estimation using the model.
     detection_result = detector.detect(input_tensor)
 
-    timer.milestone("Done detection")
+    timer.milestone("Done detecting")
 
     for detection in detection_result.detections:
         #print(detection.categories)
@@ -134,10 +135,8 @@ while cam.isOpened():
     # Stop the program if the ESC key is pressed.
     if cv2.waitKey(1) == 27:
       break
-      
-    #if keyboard.read_key() == 27:
-    #  break 
 
+    # This is so we have an easy way of stopping the script while running.
     if os.path.exists(script_path + "stop.txt"):
       break 
 
